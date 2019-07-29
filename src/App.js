@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import API from '../src/utils/API';
 import User from './User';
@@ -27,15 +28,29 @@ class App extends Component {
         email={email} />;
     }
 
+  
   // async allows us to await certain actions inside
   async componentDidMount() {
+
+    try {
+      // Load async data from an inexistent endpoint.
+      let userData = await axios.get("/in")
+        .then(resp => 
+          console.log(resp.data, resp.status, resp.headers, resp.statusText),
+          );
+    } catch (e) {
+      console.log(`Axios request failed: ${e}`);
+      // e: Error: Request failed with status code 404
+    }
+
+    /*
     // Load async data.
     let userData = await API.get('/', {
       params: {
         results: 1, // number of results expected
         inc: 'name,email,picture' // details we expect
       }
-    })
+    }) 
     //parse results for easy use
     userData = userData.data.results[0];
 
@@ -52,6 +67,8 @@ class App extends Component {
     })
 
     // Re-render of our component will be triggered.
+    */
+    
   }
 }
 
